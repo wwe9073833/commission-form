@@ -152,20 +152,13 @@
         </div>
         
         <p class="mb-4" style="font-size: 0.95rem; line-height: 1.8; color: #444; text-align: justify; text-justify: inter-ideograph;">
-            請於匯款後，點擊下方按鈕加入官方 LINE 傳送<strong>匯款截圖</strong>或<strong>後五碼</strong>，餃子收到後會盡快安排喔！😆
+            請於匯款後，點擊下方按鈕加入官方LINE傳送<br><strong>匯款截圖</strong>或<strong>後五碼</strong>， <br>餃子收到後會盡快安排喔！😆
         </p>
         
         <a href="https://line.me/R/ti/p/@659jchwf" target="_blank" style="text-decoration: none; display: block;">
             <div style="background: #8B0000; color: white; padding: 14px; border-radius: 50px; text-align: center; font-weight: bold; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(139,0,0,0.25); letter-spacing: 1px;">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" width="22" style="margin-right: 8px; filter: brightness(0) invert(1); vertical-align: middle; margin-top: -3px;">
-                加好友傳截圖
-            </div>
-        </a>
-        
-        <a href="https://line.me/R/ti/p/@659jchwf" target="_blank" style="text-decoration: none;">
-            <div style="background: #8B0000; color: white; padding: 12px; border-radius: 50px; text-align: center; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(139,0,0,0.2);">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" width="20" style="margin-right: 8px; filter: brightness(0) invert(1); vertical-align: middle;">
-                加好友傳截圖
+                加入好友傳截圖
             </div>
         </a>
     </div>
@@ -229,7 +222,7 @@
     document.getElementById('orderForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
-        btn.disabled = true; btn.innerText = "圖片優化與上傳中...";
+        btn.disabled = true; btn.innerText = "圖片上傳中，請耐心等待...";
 
         const fileInput = document.getElementById('fileInput');
         let fileData = null;
