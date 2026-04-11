@@ -12,38 +12,62 @@
 <style>
     body { 
         background: #8B0000; 
-        padding: 20px; 
-        /* 優先使用思源宋體 */
+        padding: 15px; /* 手機版邊距縮小一點點 */
         font-family: 'Noto Serif TC', serif; 
         color: #333;
-        letter-spacing: 0.05rem; /* 增加一點點字距，更優雅 */
+        letter-spacing: 0.05rem;
+        word-break: keep-all; /* 避免中文字被奇怪地斷開 */
     }
     
     .container { 
         max-width: 600px; 
         background: white; 
-        padding: 30px; 
+        padding: 25px; 
         border-radius: 20px; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
     }
 
-    /* 標題加強效果 */
+    /* 💡 針對標題文字跑掉的修正 */
+    .header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
     .header h2 {
         font-weight: 700;
-        letter-spacing: 0.2rem;
+        letter-spacing: 0.1rem;
+        font-size: 1.5rem; /* 固定一個適合手機的大小 */
+        line-height: 1.4;
+        white-space: nowrap; /* 💡 強制標題不准斷行 */
+        overflow: hidden;
+        text-overflow: ellipsis; /* 如果真的太長就變點點點，但你的字數應該剛好 */
+    }
+
+    /* 讓輸入框在手機上不要看起來太硬 */
+    .form-control, .form-select {
+        border-radius: 8px;
+        font-family: 'Noto Serif TC', serif; /* 輸入框也統一字體 */
     }
 
     .price-tag { 
-        font-size: 1.5rem; 
-        color: #8B0000; /* 改為與按鈕一致的深紅 */
+        font-size: 1.4rem; 
+        color: #8B0000;
         font-weight: bold; 
     }
 
-    /* 按鈕懸停效果 */
+    /* 手機版 RWD 調整 */
+    @media (max-width: 480px) {
+        .header h2 {
+            font-size: 1.25rem; /* 手機更小的時候再縮一點 */
+        }
+        .container {
+            padding: 20px;
+        }
+    }
+
     #submitBtn:hover {
         background-color: #a00000 !important;
         box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
-        transform: translateY(-2px);
     }
 </style>
 </head>
@@ -51,7 +75,7 @@
 <body>
 
 <div class="container mx-auto">
-    <div class="header"><h2>🥟 DUMPLING 委託畫作</h2></div>
+    <div class="header"><h2>👄DUMPLING 委託畫作</h2></div>
     
     <form id="orderForm">
         <div class="mb-3"><label>姓名 (全名) *</label><input type="text" id="name" class="form-control" required></div>
