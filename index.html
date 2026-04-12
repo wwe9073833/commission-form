@@ -83,6 +83,16 @@
         box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
         transform: translateY(-2px);
     }
+
+    /* 讓明細表的小計文字在手機上不會太擠 */
+    .price-detail-box span {
+        font-size: 0.95rem;
+    }
+    /* 加強轉圈圈動畫的顏色 */
+    .spinner-border {
+        color: white !important;
+    }
+    
 </style>
 </head>
 
@@ -108,16 +118,8 @@
             <label class="form-label">E-mail <span class="text-danger">*</span></label>
             <input type="email" id="email" class="form-control" placeholder="example@gmail.com" required>
         </div>
-        <div class="mb-3">
-            <label class="form-label">聯絡方式 <span class="text-danger">*</span></label>
-            <input type="text" id="contact" class="form-control" placeholder="請填寫手機號碼" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">門市 (寄件用)</label>
-            <input type="text" id="store" class="form-control" placeholder="如需加購商品請填寫7-11門市">
-        </div>
 
-        <hr class="my-4">
+        
 
         <div class="mb-3">
             <label class="form-label">你想要畫哪一種呢？ <span class="text-danger">*</span></label>
@@ -150,6 +152,16 @@
                 <option value="否">否 (僅需電子檔)</option>
                 <option value="是">是 (加購實體商品)</option>
             </select>
+        </div>
+
+        <div class="mb-3" id="contactArea" style="display:none;">
+            <label class="form-label">聯絡方式 <span class="text-danger">*</span></label>
+            <input type="text" id="contact" class="form-control" placeholder="請填寫手機號碼">
+        </div>
+
+        <div class="mb-3" id="storeArea" style="display:none;">
+            <label class="form-label">7-11門市 (寄件用)</label>
+            <input type="text" id="store" class="form-control" placeholder="如需加購商品請填寫 7-11 門市名稱">
         </div>
 
         <div id="productArea" style="display:none; background: #fefefe; padding: 15px; border-radius: 10px; border: 1px inset #eee;">
@@ -230,49 +242,85 @@
     }
 
     function updateUI() {
-        let drawPrice = parseInt(document.getElementById('drawType').value) || 0;
-        let isProduct = document.getElementById('isProduct').value;
-        let qtyPostcard = parseInt(document.getElementById('qtyPostcard').value) || 0;
-        let qtyCharm = parseInt(document.getElementById('qtyCharm').value) || 0;
-        
-        // 1. 處理備註欄
-        const noteArea = document.getElementById('noteArea');
-        const noteLabel = document.getElementById('noteLabel');
-        const noteInput = document.getElementById('note');
-        if(drawPrice === 450) {
-            noteArea.style.display = 'block';
-            noteLabel.innerText = "備註📝 (畫作與提供的照片類似)：";
-            noteInput.placeholder = "照片中有一定得畫出來的部分，請說明，不然餃子會用自己的想像呈現照片的樣子；若無則填無，謝謝很多～";
-        } else if (drawPrice === 580) {
-            noteArea.style.display = 'block';
-            noteLabel.innerText = "備註📝 (詳細說明希望作品呈現的樣子)：";
-            noteInput.placeholder = "例：兩個人要抱著、胸部要大...";
-        }
-
-        // 2. 處理金額計算與明細
-        let productSubtotal = (qtyPostcard * 40) + (qtyCharm * 50);
-        let shippingFee = (isProduct === '是') ? 60 : 0;
-        document.getElementById('productArea').style.display = (isProduct === '是') ? 'block' : 'none';
-
-        document.getElementById('detailDraw').innerText = "$" + drawPrice;
-        document.getElementById('detailProduct').innerText = "$" + productSubtotal;
-        document.getElementById('detailShipping').innerText = "$" + shippingFee;
-
-        let total = drawPrice + productSubtotal + shippingFee;
-        document.getElementById('totalPrice').innerText = "$" + total;
-
-        // 3. 智慧邏輯：若選商品但沒填數量則按鈕失效
-        const btn = document.getElementById('submitBtn');
-        if (isProduct === '是' && productSubtotal === 0) {
-            btn.disabled = true;
-            btn.innerText = "請填寫加購商品數量";
-            btn.style.opacity = "0.6";
-        } else {
-            btn.disabled = false;
-            btn.innerText = "確認送出並顯示匯款帳號";
-            btn.style.opacity = "1";
-        }
+    let drawPrice = parseInt(document.getElementById('drawType').value) || 0;
+    let isProduct = document.getElementById('isProduct').value;
+    let qtyPostcard = parseInt(document.getElementById('qtyPostcard').value) || 0;
+    let qtyCharm = parseInt(document.getElementById('qtyCharm').value) || 0;
+    
+    // 1. 備註欄邏輯 (與之前相同)
+    const noteArea = document.getElementById('noteArea');
+    const noteLabel = document.getElementById('noteLabel');
+    const noteInput = document.getElementById('note');
+    if(drawPrice === 450) {
+        noteArea.style.display = 'block';
+        noteLabel.innerText = "備註📝 (畫作與提供的照片類似)：";
+        noteInput.placeholder = "照片中有一定得畫出來的部分請說明...";
+    } else if (drawPrice === 580) {
+        noteArea.style.display = 'block';
+        noteLabel.innerText = "備註📝 (詳細說明希望作品呈現的樣子)：";
+        noteInput.placeholder = "例：兩個人要抱著、要有特定背景...";
     }
+
+    // 2. 【Smart Logic】商品、門市、聯絡方式的連動
+    const productArea = document.getElementById('productArea');
+    const storeArea = document.getElementById('storeArea'); 
+    const contactArea = document.getElementById('contactArea'); // 聯絡方式區塊
+    const contactInput = document.getElementById('contact');   // 聯絡方式輸入框
+    
+    let productSubtotal = (qtyPostcard * 40) + (qtyCharm * 50);
+    let shippingFee = 0;
+
+    if (isProduct === '是') {
+        productArea.style.display = 'block';
+        storeArea.style.display = 'block'; 
+        contactArea.style.display = 'block'; // 顯示聯絡方式
+        contactInput.required = true;        // 設為必填
+        shippingFee = 60;
+    } else {
+        productArea.style.display = 'none';
+        storeArea.style.display = 'none'; 
+        contactArea.style.display = 'none';  // 隱藏聯絡方式
+        contactInput.required = false;       // 取消必填
+        shippingFee = 0;
+    }
+
+    // 3. 更新金額明細 (強化版 Price Precision)
+    const drawElem = document.getElementById('detailDraw');
+    const prodElem = document.getElementById('detailProduct');
+    const shipElem = document.getElementById('detailShipping');
+
+    // 格式化顯示：有金額顯示深色，0元顯示淺灰色
+    drawElem.innerText = "$" + drawPrice;
+    drawElem.style.color = drawPrice > 0 ? "#333" : "#ccc";
+
+    prodElem.innerText = "$" + productSubtotal;
+    prodElem.style.color = productSubtotal > 0 ? "#333" : "#ccc";
+
+    shipElem.innerText = "$" + shippingFee;
+    shipElem.style.color = shippingFee > 0 ? "#333" : "#ccc";
+
+    // 4. 計算總額並增加千分位撇號 (例如 $1,000)
+    let total = drawPrice + productSubtotal + shippingFee;
+    document.getElementById('totalPrice').innerText = "$" + total.toLocaleString();
+
+    // 5. 【Smart Logic】智慧按鈕狀態檢查 (維持原本邏輯)
+    const btn = document.getElementById('submitBtn');
+    if (drawPrice === 0) {
+        btn.disabled = true;
+        btn.innerText = "請先選擇委託畫作類型";
+        btn.style.opacity = "0.6";
+    } 
+    else if (isProduct === '是' && productSubtotal === 0) {
+        btn.disabled = true;
+        btn.innerText = "請填寫加購商品數量 (或選否)";
+        btn.style.opacity = "0.6";
+    } 
+    else {
+        btn.disabled = false;
+        btn.innerText = "確認送出並顯示匯款帳號";
+        btn.style.opacity = "1";
+    }
+}
 
     function compressImage(file) {
         return new Promise((resolve) => {
@@ -332,7 +380,7 @@
             window.scrollTo(0, 0);
         })
         .catch(err => {
-            alert("上傳失敗，請檢查網路或聯繫畫師");
+            alert("上傳失敗，請檢查網路或聯繫餃子！");
             btn.disabled = false; btn.innerText = "重新送出";
         });
     });
