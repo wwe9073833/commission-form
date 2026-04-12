@@ -363,7 +363,7 @@
         const now = new Date();
         const dateStr = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
         const randomStr = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-        const orderId = "DA-" + dateStr + "-" + randomStr;
+        const orderId = "DA" + dateStr + randomStr;
 
         isSubmitting = true; 
 
