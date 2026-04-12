@@ -226,8 +226,17 @@
 
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx0ZtlF-Vh6lLMuOu9Jvfq8n8pPmHLONQrI-1pez5bvaB0KT4-QZ3xzuwilSjSgw8Ki4Q/exec";
+    
+    // 💡 1. 加入變數與攔截監聽
+    let isSubmitting = false; 
+    window.addEventListener('beforeunload', (e) => {
+        if (isSubmitting) {
+            e.preventDefault();
+            e.returnValue = ''; 
+        }
+    });
 
-    // 💡 圖片預覽
+    // 圖片預覽
     function previewImage(input) {
         const container = document.getElementById('imagePreviewContainer');
         const preview = document.getElementById('imagePreview');
@@ -241,87 +250,83 @@
         }
     }
 
+    // UI 動態邏輯
     function updateUI() {
-    let drawPrice = parseInt(document.getElementById('drawType').value) || 0;
-    let isProduct = document.getElementById('isProduct').value;
-    let qtyPostcard = parseInt(document.getElementById('qtyPostcard').value) || 0;
-    let qtyCharm = parseInt(document.getElementById('qtyCharm').value) || 0;
-    
-    // 1. 備註欄邏輯 (與之前相同)
-    const noteArea = document.getElementById('noteArea');
-    const noteLabel = document.getElementById('noteLabel');
-    const noteInput = document.getElementById('note');
-    if(drawPrice === 450) {
-        noteArea.style.display = 'block';
-        noteLabel.innerText = "備註📝 (畫作與提供的照片類似)：";
-        noteInput.placeholder = "照片中有一定得畫出來的部分請說明...";
-    } else if (drawPrice === 580) {
-        noteArea.style.display = 'block';
-        noteLabel.innerText = "備註📝 (詳細說明希望作品呈現的樣子)：";
-        noteInput.placeholder = "例：兩個人要抱著、要有特定背景...";
+        let drawPrice = parseInt(document.getElementById('drawType').value) || 0;
+        let isProduct = document.getElementById('isProduct').value;
+        let qtyPostcard = parseInt(document.getElementById('qtyPostcard').value) || 0;
+        let qtyCharm = parseInt(document.getElementById('qtyCharm').value) || 0;
+        
+        // 1. 備註欄邏輯
+        const noteArea = document.getElementById('noteArea');
+        const noteLabel = document.getElementById('noteLabel');
+        const noteInput = document.getElementById('note');
+        if(drawPrice === 450) {
+            noteArea.style.display = 'block';
+            noteLabel.innerText = "備註📝 (畫作與提供的照片類似)：";
+            noteInput.placeholder = "照片中有一定得畫出來的部分請說明...";
+        } else if (drawPrice === 580) {
+            noteArea.style.display = 'block';
+            noteLabel.innerText = "備註📝 (詳細說明希望作品呈現的樣子)：";
+            noteInput.placeholder = "例：兩個人要抱著、要有特定背景...";
+        }
+
+        // 2. 連動顯示邏輯
+        const productArea = document.getElementById('productArea');
+        const storeArea = document.getElementById('storeArea'); 
+        const contactArea = document.getElementById('contactArea');
+        const contactInput = document.getElementById('contact');
+        
+        let productSubtotal = (qtyPostcard * 40) + (qtyCharm * 50);
+        let shippingFee = 0;
+
+        if (isProduct === '是') {
+            productArea.style.display = 'block';
+            storeArea.style.display = 'block'; 
+            contactArea.style.display = 'block';
+            contactInput.required = true;
+            shippingFee = 60;
+        } else {
+            productArea.style.display = 'none';
+            storeArea.style.display = 'none'; 
+            contactArea.style.display = 'none';
+            contactInput.required = false;
+            shippingFee = 0;
+        }
+
+        // 3. 金額更新
+        const drawElem = document.getElementById('detailDraw');
+        const prodElem = document.getElementById('detailProduct');
+        const shipElem = document.getElementById('detailShipping');
+
+        drawElem.innerText = "$" + drawPrice;
+        drawElem.style.color = drawPrice > 0 ? "#333" : "#ccc";
+        prodElem.innerText = "$" + productSubtotal;
+        prodElem.style.color = productSubtotal > 0 ? "#333" : "#ccc";
+        shipElem.innerText = "$" + shippingFee;
+        shipElem.style.color = shippingFee > 0 ? "#333" : "#ccc";
+
+        let total = drawPrice + productSubtotal + shippingFee;
+        document.getElementById('totalPrice').innerText = "$" + total.toLocaleString();
+
+        // 4. 按鈕狀態檢查
+        const btn = document.getElementById('submitBtn');
+        if (drawPrice === 0) {
+            btn.disabled = true;
+            btn.innerText = "請先選擇委託畫作類型";
+            btn.style.opacity = "0.6";
+        } else if (isProduct === '是' && productSubtotal === 0) {
+            btn.disabled = true;
+            btn.innerText = "請填寫加購商品數量 (或選否)";
+            btn.style.opacity = "0.6";
+        } else {
+            btn.disabled = false;
+            btn.innerText = "確認送出並顯示匯款帳號";
+            btn.style.opacity = "1";
+        }
     }
 
-    // 2. 【Smart Logic】商品、門市、聯絡方式的連動
-    const productArea = document.getElementById('productArea');
-    const storeArea = document.getElementById('storeArea'); 
-    const contactArea = document.getElementById('contactArea'); // 聯絡方式區塊
-    const contactInput = document.getElementById('contact');   // 聯絡方式輸入框
-    
-    let productSubtotal = (qtyPostcard * 40) + (qtyCharm * 50);
-    let shippingFee = 0;
-
-    if (isProduct === '是') {
-        productArea.style.display = 'block';
-        storeArea.style.display = 'block'; 
-        contactArea.style.display = 'block'; // 顯示聯絡方式
-        contactInput.required = true;        // 設為必填
-        shippingFee = 60;
-    } else {
-        productArea.style.display = 'none';
-        storeArea.style.display = 'none'; 
-        contactArea.style.display = 'none';  // 隱藏聯絡方式
-        contactInput.required = false;       // 取消必填
-        shippingFee = 0;
-    }
-
-    // 3. 更新金額明細 (強化版 Price Precision)
-    const drawElem = document.getElementById('detailDraw');
-    const prodElem = document.getElementById('detailProduct');
-    const shipElem = document.getElementById('detailShipping');
-
-    // 格式化顯示：有金額顯示深色，0元顯示淺灰色
-    drawElem.innerText = "$" + drawPrice;
-    drawElem.style.color = drawPrice > 0 ? "#333" : "#ccc";
-
-    prodElem.innerText = "$" + productSubtotal;
-    prodElem.style.color = productSubtotal > 0 ? "#333" : "#ccc";
-
-    shipElem.innerText = "$" + shippingFee;
-    shipElem.style.color = shippingFee > 0 ? "#333" : "#ccc";
-
-    // 4. 計算總額並增加千分位撇號 (例如 $1,000)
-    let total = drawPrice + productSubtotal + shippingFee;
-    document.getElementById('totalPrice').innerText = "$" + total.toLocaleString();
-
-    // 5. 【Smart Logic】智慧按鈕狀態檢查 (維持原本邏輯)
-    const btn = document.getElementById('submitBtn');
-    if (drawPrice === 0) {
-        btn.disabled = true;
-        btn.innerText = "請先選擇委託畫作類型";
-        btn.style.opacity = "0.6";
-    } 
-    else if (isProduct === '是' && productSubtotal === 0) {
-        btn.disabled = true;
-        btn.innerText = "請填寫加購商品數量 (或選否)";
-        btn.style.opacity = "0.6";
-    } 
-    else {
-        btn.disabled = false;
-        btn.innerText = "確認送出並顯示匯款帳號";
-        btn.style.opacity = "1";
-    }
-}
-
+    // 圖片壓縮邏輯
     function compressImage(file) {
         return new Promise((resolve) => {
             const reader = new FileReader();
@@ -332,7 +337,7 @@
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     let width = img.width; let height = img.height;
-                    const max_size = 800;
+                    const max_size = 1200; // 稍微提升細緻度
                     if (width > height) {
                         if (width > max_size) { height *= max_size / width; width = max_size; }
                     } else {
@@ -346,8 +351,13 @@
         });
     }
 
+    // 表單送出
     document.getElementById('orderForm').addEventListener('submit', async function(e) {
         e.preventDefault();
+        
+        // 💡 2. 開始上傳：啟動攔截
+        isSubmitting = true; 
+
         const btn = document.getElementById('submitBtn');
         btn.disabled = true; 
         btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 餃子正在接收照片...';
@@ -375,11 +385,17 @@
 
         fetch(WEB_APP_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
         .then(() => {
+            // 💡 3. 上傳成功：解除攔截
+            isSubmitting = false; 
+
             document.getElementById('bankInfo').style.display = 'block';
-            document.getElementById('orderForm').style.display = 'none'; // 送出後隱藏表單
+            document.getElementById('orderForm').style.display = 'none';
             window.scrollTo(0, 0);
         })
         .catch(err => {
+            // 💡 4. 上傳失敗：解除攔截
+            isSubmitting = false; 
+
             alert("上傳失敗，請檢查網路或聯繫餃子！");
             btn.disabled = false; btn.innerText = "重新送出";
         });
