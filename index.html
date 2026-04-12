@@ -160,7 +160,7 @@
         </div>
 
         <div class="mb-3" id="storeArea" style="display:none;">
-            <label class="form-label">7-11門市 (寄件用)</label>
+            <label class="form-label">7-11門市 (寄件用) <span class="text-danger">*</span></label>
             <input type="text" id="store" class="form-control" placeholder="加購商品請填寫 7-11 門市名稱">
         </div>
 
@@ -210,10 +210,11 @@
         </div>
         
         <p class="mb-4" style="font-size: 0.95rem; line-height: 1.8; color: #444; text-align: center;">
-            請於匯款後，點擊下方按鈕加入官方 LINE<br>
-            傳送<strong>匯款截圖</strong>或<strong>後五碼</strong><br>
-            餃子收到後會盡快為您安排喔！😆
-        </p>
+             請於匯款後，點擊下方按鈕加入官方 LINE<br>
+             主動傳送 <strong style="color:#8B0000;">「訂單編號」</strong> 並附上<br>
+             <strong>匯款截圖</strong> 或 <strong>後五碼</strong><br>
+             餃子收到後會根據編號快速為您核對！😆
+            </p>
         
         <a href="https://line.me/R/ti/p/@659jchwf" target="_blank" style="text-decoration: none; display: block;">
             <div style="background: #8B0000; color: white; padding: 14px; border-radius: 50px; text-align: center; font-weight: bold; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(139,0,0,0.25);">
@@ -225,7 +226,7 @@
 </div>
 
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx0ZtlF-Vh6lLMuOu9Jvfq8n8pPmHLONQrI-1pez5bvaB0KT4-QZ3xzuwilSjSgw8Ki4Q/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyTOVcryB_6_fuoxmlmQIXUTrFlnQh56YPcOHVcVIqw6pE7NgrA3L-qOGTvTeGRad8A/exec";
     
     // 💡 1. 加入變數與攔截監聽
     let isSubmitting = false; 
@@ -274,6 +275,7 @@
         // 2. 連動顯示邏輯
         const productArea = document.getElementById('productArea');
         const storeArea = document.getElementById('storeArea'); 
+        const storeInput = document.getElementById('store');
         const contactArea = document.getElementById('contactArea');
         const contactInput = document.getElementById('contact');
         
@@ -283,12 +285,14 @@
         if (isProduct === '是') {
             productArea.style.display = 'block';
             storeArea.style.display = 'block'; 
+            storeInput.required = true;
             contactArea.style.display = 'block';
             contactInput.required = true;
             shippingFee = 60;
         } else {
             productArea.style.display = 'none';
             storeArea.style.display = 'none'; 
+            storeInput.required = false;
             contactArea.style.display = 'none';
             contactInput.required = false;
             shippingFee = 0;
@@ -355,7 +359,12 @@
     document.getElementById('orderForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // 💡 2. 開始上傳：啟動攔截
+        // 💡 新增：生成訂單編號 (DA + 年月日 + 4位隨機碼)
+        const now = new Date();
+        const dateStr = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
+        const randomStr = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+        const orderId = "DA-" + dateStr + "-" + randomStr;
+
         isSubmitting = true; 
 
         const btn = document.getElementById('submitBtn');
@@ -369,6 +378,7 @@
         }
 
         const payload = {
+            orderId: orderId, // 💡 新增這一行：傳送到後端
             name: document.getElementById('name').value,
             ig: document.getElementById('ig').value,
             email: document.getElementById('email').value,
@@ -385,21 +395,51 @@
 
         fetch(WEB_APP_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
         .then(() => {
-            // 💡 3. 上傳成功：解除攔截
             isSubmitting = false; 
 
-            document.getElementById('bankInfo').style.display = 'block';
+            const bankBox = document.getElementById('bankInfo');
+            
+            // 💡 優化後的顯示邏輯：包含編號與複製按鈕
+            const idDisplayHtml = `
+                <div id="orderIdContainer" style="text-align:center; margin-bottom:20px; background:#fdf2f2; border:1px solid #8B0000; padding:15px; border-radius:12px;">
+                    <div style="font-size:0.85rem; color:#8B0000; margin-bottom:5px;">您的訂單編號</div>
+                    <div id="orderIdText" style="font-size:1.4rem; font-weight:bold; color:#8B0000; letter-spacing:1px; margin-bottom:10px;">${orderId}</div>
+                    <button type="button" onclick="copyOrderId('${orderId}')" style="background:#8B0000; color:white; border:none; padding:5px 15px; border-radius:50px; font-size:0.85rem; cursor:pointer; transition:0.3s;">
+                        複製編號
+                    </button>
+                    <div id="copyMsg" style="font-size:0.75rem; color:green; margin-top:5px; display:none;">✅已複製到剪貼簿</div>
+                </div>
+            `;
+            
+            if(!document.getElementById('orderIdContainer')){
+                bankBox.insertAdjacentHTML('afterbegin', idDisplayHtml);
+            }
+
+            bankBox.style.display = 'block';
             document.getElementById('orderForm').style.display = 'none';
             window.scrollTo(0, 0);
         })
-        .catch(err => {
-            // 💡 4. 上傳失敗：解除攔截
-            isSubmitting = false; 
 
+        .catch(err => {
+            isSubmitting = false; 
             alert("上傳失敗，請檢查網路或聯繫餃子！");
             btn.disabled = false; btn.innerText = "重新送出";
         });
     });
+
+    // 💡 複製訂單編號的功能
+    function copyOrderId(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            const msg = document.getElementById('copyMsg');
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 2000);
+        }).catch(err => {
+            // 防呆：如果瀏覽器不支援 clipboard API
+            alert("複製失敗，請手動紀錄編號：" + text);
+        });
+    }
 </script>
 </body>
 </html>
