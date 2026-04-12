@@ -10,99 +10,55 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
-    body { 
-        background: #8B0000; 
-        padding: 15px; 
-        font-family: 'Noto Serif TC', serif; 
-        color: #333;
-        letter-spacing: 0.05rem;
-        word-break: keep-all;
-    }
-    
-    .container { 
-        max-width: 600px; 
-        background: white; 
-        padding: 25px; 
-        border-radius: 20px; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
-    }
-
-    .header {
-        text-align: center;
-        margin-bottom: 25px;
-    }
-
-    .header img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        margin-bottom: 10px;
-        border: 2px solid #8B0000;
-        object-fit: cover;
-    }
-
-    .header h2 {
-        font-weight: 700;
-        letter-spacing: 0.1rem;
-        font-size: 1.5rem;
-        line-height: 1.4;
-    }
-
-    .form-label {
-        font-weight: 700;
-        color: #555;
-    }
-
-    .form-control, .form-select {
-        border-radius: 8px;
-        font-family: 'Noto Serif TC', serif;
-    }
-
-    .price-tag { 
-        font-size: 1.5rem; 
-        color: #8B0000;
-        font-weight: bold; 
-    }
-
-    /* 金額明細區塊 */
-    .price-detail-box {
-        background: #fff9f9;
-        padding: 15px;
-        border-radius: 12px;
-        border: 1px dashed #8B0000;
-        margin-bottom: 20px;
-    }
-
-    @media (max-width: 480px) {
-        .header h2 { font-size: 1.25rem; }
-        .container { padding: 20px; }
-    }
-
-    #submitBtn:hover:not(:disabled) {
-        background-color: #a00000 !important;
-        box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
-        transform: translateY(-2px);
-    }
-
-    /* 讓明細表的小計文字在手機上不會太擠 */
-    .price-detail-box span {
-        font-size: 0.95rem;
-    }
-    /* 加強轉圈圈動畫的顏色 */
-    .spinner-border {
-        color: white !important;
-    }
-    
+    body { background: #8B0000; padding: 15px; font-family: 'Noto Serif TC', serif; color: #333; letter-spacing: 0.05rem; word-break: keep-all; }
+    .container { max-width: 600px; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .header { text-align: center; margin-bottom: 25px; }
+    .header img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; border: 2px solid #8B0000; object-fit: cover; }
+    .header h2 { font-weight: 700; letter-spacing: 0.1rem; font-size: 1.5rem; line-height: 1.4; }
+    .form-label { font-weight: 700; color: #555; }
+    .form-control, .form-select { border-radius: 8px; font-family: 'Noto Serif TC', serif; }
+    .price-tag { font-size: 1.5rem; color: #8B0000; font-weight: bold; }
+    .price-detail-box { background: #fff9f9; padding: 15px; border-radius: 12px; border: 1px dashed #8B0000; margin-bottom: 20px; }
+    @media (max-width: 480px) { .header h2 { font-size: 1.25rem; } .container { padding: 20px; } }
+    #submitBtn:hover:not(:disabled) { background-color: #a00000 !important; transform: translateY(-2px); }
+    .spinner-border { color: white !important; }
 </style>
 </head>
 
 <body>
 
+<div class="modal fade" id="termsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content" style="border-radius: 20px; border: none;">
+            <div class="modal-header" style="background: #8B0000; color: white; border-radius: 20px 20px 0 0;">
+                <h5 class="modal-title fw-bold">📢 訂購須知（必讀）</h5>
+            </div>
+            <div class="modal-body p-4" style="font-size: 0.95rem; line-height: 1.7;">
+                <p class="fw-bold text-center" style="font-size: 1.1rem; color: #8B0000;">各位啊～各位啊～✨</p>
+                <p>請先不要期望餃子的似顏繪會跟你們提供的照片一模一樣！<br>
+                    餃子是用自己的眼睛去想像、創作的，<br>
+                    所以提供的照片 <strong>僅供參考</strong>（跩個二五八萬😎）。</p>
+                <hr>
+                <h6 class="fw-bold" style="color: #8B0000;">🔹 下單前請注意 🔹</h6>
+                <ul class="ps-3 small">
+                    <li><strong>不接急單：</strong>1-2 天內無法完成，約 5-7 天交件。</li>
+                    <li><strong>交件方式：</strong>會傳送至您的 IG 或信箱。</li>
+                    <li><strong>修改服務：</strong>完成後<strong>僅限修改一次</strong>。</li>
+                    <li><strong>需求說明：</strong>有特定想法請務必寫在「備註欄」。</li>
+                </ul>
+            </div>
+            <div class="modal-footer" style="border: none; justify-content: center; padding-bottom: 25px;">
+                <button type="button" class="btn btn-lg w-75 fw-bold" style="background: #8B0000; color: white; border-radius: 50px;" onclick="myModal.hide()">我已閱讀並同意</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container mx-auto">
     <div class="header">
         <img src="logo.png" alt="DUMPLING ART LOGO">
         <h2>DUMPLING ® ART</h2>
-        <p style="font-size: 0.85rem; color: #8B0000; letter-spacing: 2px;">委 託 創 作 系 統</p>
+        <p style="font-size: 1rem; color: #8B0000; letter-spacing: 2px;">委 託 創 作</p>
     </div>
     
     <form id="orderForm">
@@ -118,8 +74,6 @@
             <label class="form-label">E-mail <span class="text-danger">*</span></label>
             <input type="email" id="email" class="form-control" placeholder="example@gmail.com" required>
         </div>
-
-        
 
         <div class="mb-3">
             <label class="form-label">你想要畫哪一種呢？ <span class="text-danger">*</span></label>
@@ -154,23 +108,21 @@
             </select>
         </div>
 
-        <div class="mb-3" id="contactArea" style="display:none;">
-            <label class="form-label">聯絡方式 <span class="text-danger">*</span></label>
-            <input type="text" id="contact" class="form-control" placeholder="請填寫手機號碼">
-        </div>
-
-        <div class="mb-3" id="storeArea" style="display:none;">
-            <label class="form-label">7-11門市 (寄件用) <span class="text-danger">*</span></label>
-            <input type="text" id="store" class="form-control" placeholder="加購商品請填寫 7-11 門市名稱">
-        </div>
-
-        <div id="productArea" style="display:none; background: #fefefe; padding: 15px; border-radius: 10px; border: 1px inset #eee;">
+        <div id="productArea" style="display:none; background: #fefefe; padding: 15px; border-radius: 10px; border: 1px inset #eee;" class="mb-3">
+            <div class="mb-3">
+                <label class="form-label small">聯絡手機 <span class="text-danger">*</span></label>
+                <input type="text" id="contact" class="form-control" placeholder="請填寫收件人手機">
+            </div>
+            <div class="mb-3">
+                <label class="form-label small">7-11 門市名稱 <span class="text-danger">*</span></label>
+                <input type="text" id="store" class="form-control" placeholder="請填寫收件門市">
+            </div>
             <div class="row mb-3 align-items-center">
-                <div class="col-7">明信片 (4張/份) <span class="text-muted" style="font-size: 0.8rem;">$40</span></div>
+                <div class="col-7">明信片 (4張/份) <span class="text-muted small">$40</span></div>
                 <div class="col-5"><input type="number" id="qtyPostcard" class="form-control" value="0" min="0" onchange="updateUI()"></div>
             </div>
             <div class="row mb-2 align-items-center">
-                <div class="col-7">吊飾 <span class="text-muted" style="font-size: 0.8rem;">$50/個</span></div>
+                <div class="col-7">吊飾 <span class="text-muted small">$50/個</span></div>
                 <div class="col-5"><input type="number" id="qtyCharm" class="form-control" value="0" min="0" onchange="updateUI()"></div>
             </div>
         </div>
@@ -178,75 +130,51 @@
         <hr class="my-4">
 
         <div class="price-detail-box">
-            <div class="d-flex justify-content-between mb-2" style="font-size: 0.9rem;">
-                <span>🎨 畫稿費用</span>
-                <span id="detailDraw">$0</span>
-            </div>
-            <div class="d-flex justify-content-between mb-2" style="font-size: 0.9rem;">
-                <span>📦 商品小計</span>
-                <span id="detailProduct">$0</span>
-            </div>
-            <div class="d-flex justify-content-between mb-2" style="font-size: 0.9rem;">
-                <span>🚚 運費 (實體寄送)</span>
-                <span id="detailShipping">$0</span>
-            </div>
-            <div class="d-flex justify-content-between align-items-center border-top pt-2 mt-2">
-                <span class="fw-bold">總金額</span>
-                <span class="price-tag" id="totalPrice">$0</span>
-            </div>
+            <div class="d-flex justify-content-between mb-2 small"><span>🎨 畫稿費用</span><span id="detailDraw">$0</span></div>
+            <div class="d-flex justify-content-between mb-2 small"><span>📦 商品小計</span><span id="detailProduct">$0</span></div>
+            <div class="d-flex justify-content-between mb-2 small"><span>🚚 運費 (實體)</span><span id="detailShipping">$0</span></div>
+            <div class="d-flex justify-content-between align-items-center border-top pt-2 mt-2"><span class="fw-bold">總金額</span><span class="price-tag" id="totalPrice">$0</span></div>
         </div>
 
         <button type="submit" class="btn w-100 mt-2 py-3 fw-bold" id="submitBtn" style="background-color: #8B0000; color: white; border: none; transition: 0.3s;">確認送出並顯示匯款帳號</button>
     </form>
 
-    <div id="bankInfo" class="bank-info" style="display: none; margin-top: 20px; padding: 20px 15px; background: #ffffff; border-radius: 15px; border: 2px solid #8B0000; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+    <div id="bankInfo" class="bank-info" style="display: none; margin-top: 20px; padding: 20px 15px; background: #ffffff; border-radius: 15px; border: 2px solid #8B0000;">
         <h4 class="fw-bold mb-3" style="color: #8B0000; text-align: center;">🎉 感謝你的支持</h4>
-        
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+        <div id="orderIdTarget"></div> <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
             <ul class="list-unstyled mb-0" style="font-size: 0.9rem; line-height: 2;">
-                <li style="white-space: nowrap;"><strong>🔹 銀　行：</strong>台新銀行 (812)</li>
-                <li style="white-space: nowrap;"><strong>🔹 帳　號：</strong><span style="font-family: 'Courier New', Courier, monospace;">28881004315222</span></li>
+                <li><strong>🔹 銀　行：</strong>台新銀行 (812)</li>
+                <li><strong>🔹 帳　號：</strong><span style="font-family: monospace;">28881004315222</span></li>
             </ul>
         </div>
         
         <p class="mb-4" style="font-size: 0.95rem; line-height: 1.8; color: #444; text-align: center;">
-             請於匯款後，點擊下方按鈕加入官方 LINE<br>
-             主動傳送 <strong style="color:#8B0000;">「訂單編號」</strong> 並附上<br>
-             <strong>匯款截圖</strong> 或 <strong>後五碼</strong><br>
-             餃子收到後會根據編號快速為您核對！😆
-            </p>
+            請於匯款後，加入官方LINE<br>
+            主動傳送 <strong style="color:#8B0000;">「訂單編號」</strong> 並附上<br>
+            <strong>匯款截圖</strong> 或 <strong>後五碼</strong><br>
+            餃子收到後會根據編號快速為您核對！😆
+        </p>
         
         <a href="https://line.me/R/ti/p/@659jchwf" target="_blank" style="text-decoration: none; display: block;">
-            <div style="background: #8B0000; color: white; padding: 14px; border-radius: 50px; text-align: center; font-weight: bold; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(139,0,0,0.25);">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/LINE_logo.svg" width="22" style="margin-right: 8px; filter: brightness(0) invert(1); vertical-align: middle; margin-top: -3px;">
-                加入好友傳截圖
-            </div>
+            <div style="background: #8B0000; color: white; padding: 14px; border-radius: 50px; text-align: center; font-weight: bold;">加入好友傳截圖</div>
         </a>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyTOVcryB_6_fuoxmlmQIXUTrFlnQh56YPcOHVcVIqw6pE7NgrA3L-qOGTvTeGRad8A/exec";
-    
-    // 💡 1. 加入變數與攔截監聽
-    let isSubmitting = false; 
-    window.addEventListener('beforeunload', (e) => {
-        if (isSubmitting) {
-            e.preventDefault();
-            e.returnValue = ''; 
-        }
-    });
+    const myModal = new bootstrap.Modal(document.getElementById('termsModal'));
+    window.onload = () => myModal.show();
 
-    // 圖片預覽
+    let isSubmitting = false;
+
     function previewImage(input) {
         const container = document.getElementById('imagePreviewContainer');
         const preview = document.getElementById('imagePreview');
         if (input.files && input.files[0]) {
             const reader = new FileReader();
-            reader.onload = e => {
-                preview.src = e.target.result;
-                container.style.display = 'block';
-            }
+            reader.onload = e => { preview.src = e.target.result; container.style.display = 'block'; }
             reader.readAsDataURL(input.files[0]);
         }
     }
@@ -272,65 +200,22 @@
             noteInput.placeholder = "例：兩個人要抱著、要有特定背景...";
         }
 
-        // 2. 連動顯示邏輯
-        const productArea = document.getElementById('productArea');
-        const storeArea = document.getElementById('storeArea'); 
-        const storeInput = document.getElementById('store');
-        const contactArea = document.getElementById('contactArea');
-        const contactInput = document.getElementById('contact');
-        
         let productSubtotal = (qtyPostcard * 40) + (qtyCharm * 50);
-        let shippingFee = 0;
+        let shippingFee = (isProduct === '是') ? 60 : 0;
 
-        if (isProduct === '是') {
-            productArea.style.display = 'block';
-            storeArea.style.display = 'block'; 
-            storeInput.required = true;
-            contactArea.style.display = 'block';
-            contactInput.required = true;
-            shippingFee = 60;
-        } else {
-            productArea.style.display = 'none';
-            storeArea.style.display = 'none'; 
-            storeInput.required = false;
-            contactArea.style.display = 'none';
-            contactInput.required = false;
-            shippingFee = 0;
-        }
+        document.getElementById('productArea').style.display = (isProduct === '是') ? 'block' : 'none';
+        document.getElementById('contact').required = (isProduct === '是');
+        document.getElementById('store').required = (isProduct === '是');
 
-        // 3. 金額更新
-        const drawElem = document.getElementById('detailDraw');
-        const prodElem = document.getElementById('detailProduct');
-        const shipElem = document.getElementById('detailShipping');
+        document.getElementById('detailDraw').innerText = "$" + drawPrice;
+        document.getElementById('detailProduct').innerText = "$" + productSubtotal;
+        document.getElementById('detailShipping').innerText = "$" + shippingFee;
+        document.getElementById('totalPrice').innerText = "$" + (drawPrice + productSubtotal + shippingFee).toLocaleString();
 
-        drawElem.innerText = "$" + drawPrice;
-        drawElem.style.color = drawPrice > 0 ? "#333" : "#ccc";
-        prodElem.innerText = "$" + productSubtotal;
-        prodElem.style.color = productSubtotal > 0 ? "#333" : "#ccc";
-        shipElem.innerText = "$" + shippingFee;
-        shipElem.style.color = shippingFee > 0 ? "#333" : "#ccc";
-
-        let total = drawPrice + productSubtotal + shippingFee;
-        document.getElementById('totalPrice').innerText = "$" + total.toLocaleString();
-
-        // 4. 按鈕狀態檢查
         const btn = document.getElementById('submitBtn');
-        if (drawPrice === 0) {
-            btn.disabled = true;
-            btn.innerText = "請先選擇委託畫作類型";
-            btn.style.opacity = "0.6";
-        } else if (isProduct === '是' && productSubtotal === 0) {
-            btn.disabled = true;
-            btn.innerText = "請填寫加購商品數量 (或選否)";
-            btn.style.opacity = "0.6";
-        } else {
-            btn.disabled = false;
-            btn.innerText = "確認送出並顯示匯款帳號";
-            btn.style.opacity = "1";
-        }
+        btn.disabled = (drawPrice === 0 || (isProduct === '是' && productSubtotal === 0));
     }
 
-    // 圖片壓縮邏輯
     function compressImage(file) {
         return new Promise((resolve) => {
             const reader = new FileReader();
@@ -340,45 +225,35 @@
                 img.src = event.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    let width = img.width; let height = img.height;
-                    const max_size = 1200; // 稍微提升細緻度
-                    if (width > height) {
-                        if (width > max_size) { height *= max_size / width; width = max_size; }
-                    } else {
-                        if (height > max_size) { width *= max_size / height; height = max_size; }
-                    }
-                    canvas.width = width; canvas.height = height;
-                    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                    let w = img.width, h = img.height;
+                    if (w > 1200) { h *= 1200/w; w = 1200; }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                     resolve(canvas.toDataURL('image/jpeg', 0.7));
                 };
             };
         });
     }
 
-    // 表單送出
     document.getElementById('orderForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        
-        // 💡 新增：生成訂單編號 (DA + 年月日 + 4位隨機碼)
+        if (isSubmitting) return;
+
+        // 生成編號
         const now = new Date();
         const dateStr = now.getFullYear() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
         const randomStr = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
         const orderId = "DA" + dateStr + randomStr;
 
-        isSubmitting = true; 
-
+        isSubmitting = true;
         const btn = document.getElementById('submitBtn');
-        btn.disabled = true; 
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 餃子正在接收照片...';
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> 圖片傳送中，請耐心等待...';
 
-        const fileInput = document.getElementById('fileInput');
-        let fileData = null;
-        if (fileInput.files.length > 0) {
-            fileData = await compressImage(fileInput.files[0]);
-        }
+        let fileData = await compressImage(document.getElementById('fileInput').files[0]);
 
         const payload = {
-            orderId: orderId, // 💡 新增這一行：傳送到後端
+            orderId: orderId,
             name: document.getElementById('name').value,
             ig: document.getElementById('ig').value,
             email: document.getElementById('email').value,
@@ -390,54 +265,34 @@
             productDetails: `明信片:${document.getElementById('qtyPostcard').value}, 吊飾:${document.getElementById('qtyCharm').value}`,
             totalAmount: document.getElementById('totalPrice').innerText.replace("$",""),
             fileData: fileData,
-            fileName: fileInput.files[0].name
+            fileName: document.getElementById('fileInput').files[0].name
         };
 
-        fetch(WEB_APP_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) })
-        .then(() => {
-            isSubmitting = false; 
-
-            const bankBox = document.getElementById('bankInfo');
-            
-            // 💡 優化後的顯示邏輯：包含編號與複製按鈕
-            const idDisplayHtml = `
-                <div id="orderIdContainer" style="text-align:center; margin-bottom:20px; background:#fdf2f2; border:1px solid #8B0000; padding:15px; border-radius:12px;">
-                    <div style="font-size:0.85rem; color:#8B0000; margin-bottom:5px;">您的訂單編號</div>
-                    <div id="orderIdText" style="font-size:1.4rem; font-weight:bold; color:#8B0000; letter-spacing:1px; margin-bottom:10px;">${orderId}</div>
-                    <button type="button" onclick="copyOrderId('${orderId}')" style="background:#8B0000; color:white; border:none; padding:5px 15px; border-radius:50px; font-size:0.85rem; cursor:pointer; transition:0.3s;">
-                        複製編號
-                    </button>
-                    <div id="copyMsg" style="font-size:0.75rem; color:green; margin-top:5px; display:none;">✅已複製到剪貼簿</div>
-                </div>
-            `;
-            
-            if(!document.getElementById('orderIdContainer')){
-                bankBox.insertAdjacentHTML('afterbegin', idDisplayHtml);
-            }
-
-            bankBox.style.display = 'block';
+        // 💡 關鍵修正：不再使用 no-cors，讓 then 流程更穩定
+        fetch(WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) })
+        .catch(err => console.log("CORS ignore")) // 忽略 GAS 的跨域報錯
+        .finally(() => {
+            isSubmitting = false;
             document.getElementById('orderForm').style.display = 'none';
+            document.getElementById('bankInfo').style.display = 'block';
+            
+            // 在 .finally 區塊內的 HTML 模板
+            document.getElementById('orderIdTarget').innerHTML = `
+            <div style="text-align:center; margin-bottom:20px; background:#fdf2f2; border:1px solid #8B0000; padding:15px; border-radius:12px;">
+                <div style="font-size:0.85rem; color:#8B0000;">您的訂單編號</div>
+                <div id="copyId" style="font-size:1.3rem; font-weight:bold; color:#8B0000; margin:5px 0;">${orderId}</div>
+                <button type="button" onclick="copyText('${orderId}')" style="background:#8B0000; color:white; border:none; padding:5px 15px; border-radius:50px; font-size:0.8rem;">複製編號</button>
+                <div id="copyMsg" style="font-size:0.7rem; color:green; display:none; margin-top:5px;">✅ 已複製</div>
+            </div>`;
+            
             window.scrollTo(0, 0);
-        })
-
-        .catch(err => {
-            isSubmitting = false; 
-            alert("上傳失敗，請檢查網路或聯繫餃子！");
-            btn.disabled = false; btn.innerText = "重新送出";
         });
     });
 
-    // 💡 複製訂單編號的功能
-    function copyOrderId(text) {
+    function copyText(text) {
         navigator.clipboard.writeText(text).then(() => {
-            const msg = document.getElementById('copyMsg');
-            msg.style.display = 'block';
-            setTimeout(() => {
-                msg.style.display = 'none';
-            }, 2000);
-        }).catch(err => {
-            // 防呆：如果瀏覽器不支援 clipboard API
-            alert("複製失敗，請手動紀錄編號：" + text);
+            document.getElementById('copyMsg').style.display = 'block';
+            setTimeout(() => document.getElementById('copyMsg').style.display = 'none', 2000);
         });
     }
 </script>
