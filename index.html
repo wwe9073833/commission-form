@@ -179,7 +179,7 @@
             <label class="form-label">你想要畫哪一種呢？ <span class="text-danger">*</span></label>
             <select id="drawType" class="form-select" onchange="updateUI()" required>
                 <option value="" disabled selected>請選擇...</option>
-                <option value="450">一般似顏繪 $450</option>
+                <option value="350">一般似顏繪 $350</option>
                 <option value="580">委託客製圖 $580</option>
             </select>
         </div>
@@ -333,7 +333,7 @@
         const noteArea = document.getElementById('noteArea');
         const noteLabel = document.getElementById('noteLabel');
         const noteInput = document.getElementById('note');
-        if(drawPrice === 450) {
+        if(drawPrice === 350) {
             noteArea.style.display = 'block';
             noteLabel.innerText = "備註📝 (畫作與提供的照片類似)：";
             noteInput.placeholder = "照片中有一定得畫出來的部分請說明...";
