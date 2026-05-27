@@ -25,6 +25,13 @@
         word-break: keep-all;
         min-height: 100vh;
     }
+
+    html, body {
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
     
     .container { 
         max-width: 600px; 
@@ -43,6 +50,9 @@
         border: none !important; /* 💡 確保去掉紅框 */
         box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
         transition: transform 0.3s ease;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .header {
@@ -92,6 +102,10 @@
         border: 1px solid #ddd;
         transition: all 0.3s ease;
         font-size: 16px;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     input[type="file"].form-control {
@@ -114,6 +128,8 @@
         font-size: 0.84rem;
         line-height: 1.7;
         color: #5a3b3b;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .drawtype-help p {
@@ -122,6 +138,14 @@
 
     .drawtype-help p:last-child {
         margin-bottom: 0;
+    }
+
+    .section-kicker {
+        margin: 0 0 14px;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        color: rgba(139, 0, 0, 0.5);
+        font-weight: 600;
     }
 
     .price-tag { 
@@ -137,6 +161,10 @@
         border-radius: 15px;
         border: 1px solid rgba(139, 0, 0, 0.1);
         position: relative;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     /* 送出按鈕美化 */
@@ -169,6 +197,8 @@
         color: #8B0000;
         text-align: center;
         margin-bottom: 10px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .success-subcopy {
@@ -177,6 +207,8 @@
         text-align: center;
         line-height: 1.7;
         margin: 0 0 16px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .order-id-card {
@@ -187,6 +219,10 @@
         padding: 18px 15px;
         border-radius: 12px;
         box-shadow: 0 6px 18px rgba(139, 0, 0, 0.08);
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .order-id-eyebrow {
@@ -202,12 +238,30 @@
         color: #8B0000;
         letter-spacing: 1px;
         margin-bottom: 8px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .order-id-note {
         font-size: 0.82rem;
         color: #7a5a5a;
         margin-bottom: 12px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    #bankInfo,
+    #bankInfo p,
+    #bankInfo li,
+    #bankInfo span,
+    #detailDraw,
+    #detailProduct,
+    #detailShipping,
+    #totalPrice {
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     @keyframes fadeIn {
@@ -255,6 +309,7 @@
     </div>
     
     <form id="orderForm">
+        <p class="section-kicker">ABOUT YOU</p>
         <div class="mb-3">
             <label class="form-label">姓名 (全名) <span class="text-danger">*</span></label>
             <input type="text" id="name" class="form-control" placeholder="例如：歐萊恩" required>
@@ -268,6 +323,7 @@
             <input type="email" id="email" class="form-control" placeholder="example@gmail.com" required>
         </div>
 
+        <p class="section-kicker">THE IDEA</p>
         <div class="mb-3">
             <label class="form-label">你想要畫哪一種呢？ <span class="text-danger">*</span></label>
             <select id="drawType" class="form-select" onchange="updateUI()" required>
@@ -287,6 +343,7 @@
             <textarea id="note" class="form-control" rows="3"></textarea>
         </div>
 
+        <p class="section-kicker">REFERENCE</p>
         <div class="mb-3">
             <label class="form-label">上傳參考照片 <span class="text-danger">*</span></label>
             <input type="file" id="fileInput" class="form-control" accept="image/*" required onchange="previewImage(this)">
@@ -298,6 +355,7 @@
 
         <hr class="my-4">
 
+        <p class="section-kicker">ADD-ONS</p>
         <div class="mb-3">
             <label class="form-label">是否製成商品？</label>
             <select id="isProduct" class="form-select" onchange="updateUI()">
@@ -329,6 +387,7 @@
 
         <hr class="my-4">
 
+        <p class="section-kicker">CHECKOUT</p>
         <div class="price-detail-box">
             <div class="d-flex justify-content-between mb-2" style="font-size: 0.9rem;">
                 <span>🎨 畫稿費用</span>
