@@ -139,6 +139,85 @@
         font-weight: 600;
     }
 
+    .gallery-wall {
+        margin: 4px 0 28px;
+    }
+
+    .gallery-wall-title {
+        margin: 0 0 10px;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        color: rgba(139, 0, 0, 0.5);
+        font-weight: 600;
+    }
+
+    .gallery-wall-copy {
+        position: relative;
+        min-height: 24px;
+        margin-bottom: 16px;
+    }
+
+    .gallery-wall-copy span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 0.88rem;
+        line-height: 1.7;
+        color: #6b4a4a;
+        opacity: 0;
+        animation: galleryCopyFade 18s ease-in-out infinite;
+    }
+
+    .gallery-wall-copy span:nth-child(2) {
+        animation-delay: 6s;
+    }
+
+    .gallery-wall-copy span:nth-child(3) {
+        animation-delay: 12s;
+    }
+
+    .gallery-marquee {
+        overflow: hidden;
+        width: calc(100% + 60px);
+        margin-left: -30px;
+        padding: 4px 0;
+    }
+
+    .gallery-track {
+        display: flex;
+        width: max-content;
+        gap: 14px;
+        animation: galleryDrift 36s linear infinite;
+    }
+
+    .gallery-frame {
+        flex: 0 0 auto;
+        width: 180px;
+        height: 230px;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #f4eeee;
+        box-shadow: 0 10px 24px rgba(139, 0, 0, 0.08);
+    }
+
+    .gallery-frame img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+    @keyframes galleryDrift {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+    }
+
+    @keyframes galleryCopyFade {
+        0%, 8% { opacity: 0; transform: translateY(4px); }
+        12%, 28% { opacity: 1; transform: translateY(0); }
+        33%, 100% { opacity: 0; transform: translateY(-4px); }
+    }
+
     .price-tag { 
         font-size: 1.8rem; 
         color: var(--main-red);
@@ -298,6 +377,27 @@
         <p class="header-brandline">帶著照片來，把你不敢說的慾望畫出來。</p>
         <p class="header-subtitle">委 託 創 作 系 統</p>
     </div>
+
+    <section class="gallery-wall" aria-label="Commission Gallery">
+        <p class="gallery-wall-title">COMMISSION GALLERY</p>
+        <div class="gallery-wall-copy" aria-hidden="true">
+            <span>把說不出口的畫面，慢慢流過眼前。</span>
+            <span>不是普通似顏繪，是你心裡的版本。</span>
+            <span>慾望不一定要解釋，它也可以被畫下來。</span>
+        </div>
+        <div class="gallery-marquee">
+            <div class="gallery-track">
+                <div class="gallery-frame"><img src="work1.jpg" alt="DUMPLING ART 委託作品 1"></div>
+                <div class="gallery-frame"><img src="work2.jpg" alt="DUMPLING ART 委託作品 2"></div>
+                <div class="gallery-frame"><img src="work3.jpg" alt="DUMPLING ART 委託作品 3"></div>
+                <div class="gallery-frame"><img src="work4.jpg" alt="DUMPLING ART 委託作品 4"></div>
+                <div class="gallery-frame"><img src="work5.jpg" alt="DUMPLING ART 委託作品 5"></div>
+                <div class="gallery-frame"><img src="work6.jpg" alt="DUMPLING ART 委託作品 1"></div>
+                <div class="gallery-frame"><img src="work7.jpg" alt="DUMPLING ART 委託作品 2"></div>
+                <div class="gallery-frame"><img src="work8.jpg" alt="DUMPLING ART 委託作品 3"></div>
+            </div>
+        </div>
+    </section>
     
     <form id="orderForm">
         <p class="section-kicker">ABOUT YOU</p>
