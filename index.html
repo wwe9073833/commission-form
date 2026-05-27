@@ -329,8 +329,7 @@
     </form>
 
     <div id="bankInfo" class="bank-info" style="display: none;">
-        <h4 class="fw-bold success-heading">DUMPLING ART 已收到你的委託</h4>
-        <p class="success-subcopy">你的慾望已經送進餃子的畫布裡了。<br>接下來只要完成匯款，這張委託就會正式排進創作流程。</p>
+        <h4 class="fw-bold success-heading">餃子已收到你的委託</h4>
         <div style="background: #eeeded; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
             <ul class="list-unstyled mb-0" style="font-size: 0.9rem; line-height: 2;">
                 <li style="white-space: nowrap;"><strong>🔹 銀　行：</strong>台新銀行 (812)</li>
@@ -339,10 +338,12 @@
         </div>
         
         <p class="mb-4" style="font-size: 0.95rem; line-height: 1.8; color: #444; text-align: left; padding: 0 10px;">
-            匯款完成後，點擊下方按鈕加入官方 LINE<br>
-            主動傳送 <strong style="color:#8B0000;">「訂單編號」</strong>，並附上<br>
+            匯款完成後，
+            <br>點擊下方按鈕加入官方LINE
+            <br>主動傳送 <strong style="color:#8B0000;">「訂單編號」</strong>，並附上<br>
             <strong>匯款截圖</strong> 或 <strong>後五碼</strong> 給餃子。<br>
-            我們會依照編號快速幫你核對，讓這份委託順利開始。
+            我們會依照編號快速幫你核對，
+            <br>讓這份委託順利開始。
         </p>
 
         <a href="https://line.me/R/ti/p/@659jchwf" target="_blank" style="text-decoration: none; display: block;">
@@ -555,13 +556,14 @@
             // 💡 重新組合內容：讓標題在最上面，接著是編號，最後才是銀行資訊
             const idDisplayHtml = `
                 <div id="orderSuccessHeader">
-                    <h4 class="fw-bold success-heading">DUMPLING ART 已收到你的委託</h4>
-                    <p class="success-subcopy">你的慾望已經送進餃子的畫布裡了。<br>接下來只要完成匯款，這張委託就會正式排進創作流程。</p>
+                    <h4 class="fw-bold success-heading">餃子已收到你的委託</h4>
+                    <p class="success-subcopy">你的慾望已經送進餃子的畫布裡。
+                        <br>接下來只要完成匯款，
+                        <br>這張委託就會排進創作流程。</p>
                     
                     <div id="orderIdContainer" class="order-id-card">
                         <div class="order-id-eyebrow">請先記下這組委託編號</div>
                         <div id="orderIdText" class="order-id-value">${orderId}</div>
-                        <div class="order-id-note">傳送 LINE 與匯款資訊時，請一併附上這組編號。</div>
                         <button type="button" onclick="copyOrderId('${orderId}')" style="background:#8B0000; color:white; border:none; padding:5px 15px; border-radius:50px; font-size:0.85rem; cursor:pointer; transition:0.3s;">
                             複製委託編號
                         </button>
